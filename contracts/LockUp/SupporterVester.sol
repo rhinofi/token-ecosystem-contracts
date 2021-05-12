@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "../Interfaces/IStakedDVF.sol";
 
 /**
@@ -15,7 +14,7 @@ import "../Interfaces/IStakedDVF.sol";
  * @dev A token holder contract that can release its token balance gradually like a
  * typical vesting scheme, with a cliff and vesting period.
  */
-contract SupporterVester is Ownable {
+contract SupporterVester {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
