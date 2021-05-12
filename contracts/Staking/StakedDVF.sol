@@ -3,16 +3,16 @@
 pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Snapshot.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // This contract handles swapping to and from xDVF, DeversiFi's staking token.
-contract StakedDVF is ERC20("StakedDVF", "xDVF"){
+contract StakedDVF is ERC20Snapshot {
     using SafeMath for uint256;
     IERC20 public dvf;
 
     // Define the DVF token contract
-    constructor(IERC20 _dvf) public {
+    constructor(IERC20 _dvf) ERC20("StakedDVF", "xDVF") public {
         dvf = _dvf;
     }
 
@@ -45,5 +45,9 @@ contract StakedDVF is ERC20("StakedDVF", "xDVF"){
         _burn(msg.sender, _share);
         dvf.transfer(msg.sender, what);
         return true;
+    }
+
+    function takeVoteSnapshotAtBlock() external returns (uint256 snapId) {
+        snapId = _snapshot();
     }
 }

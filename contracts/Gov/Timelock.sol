@@ -10,6 +10,7 @@ contract Timelock {
     event NewAdmin(address indexed newAdmin);
     event NewPendingAdmin(address indexed newPendingAdmin);
     event NewDelay(uint indexed newDelay);
+    event NewReferendumManager(address indexed newReferendumManager);
     event CancelTransaction(bytes32 indexed txHash, address indexed target, uint value, string signature,  bytes data, uint eta);
     event ExecuteTransaction(bytes32 indexed txHash, address indexed target, uint value, string signature,  bytes data, uint eta);
     event QueueTransaction(bytes32 indexed txHash, address indexed target, uint value, string signature, bytes data, uint eta);
@@ -21,6 +22,8 @@ contract Timelock {
     address public admin;
     address public pendingAdmin;
     uint public delay;
+
+    address public referendumManager;
 
     mapping (bytes32 => bool) public queuedTransactions;
 
@@ -57,6 +60,16 @@ contract Timelock {
         pendingAdmin = pendingAdmin_;
 
         emit NewPendingAdmin(pendingAdmin);
+    }
+
+    function setReferendumManager(address referendumManager_) public {
+        if (referendumManager == address(0)) {
+          require(msg.sender == admin, "Timelock::setReferendumManager: Call must come from admin.");
+        } else {
+          require(msg.sender == address(this), "Timelock::setReferendumManager: Call must come from Timelock.");
+        }
+        referendumManager = referendumManager_;
+        emit NewReferendumManager(referendumManager_);
     }
 
     function queueTransaction(address target, uint value, string memory signature, bytes memory data, uint eta) public returns (bytes32) {
@@ -109,6 +122,12 @@ contract Timelock {
     function getBlockTimestamp() internal view returns (uint) {
         // solium-disable-next-line security/no-block-members
         return block.timestamp;
+    }
+
+    function confirmSuccessfulReferendum(address pendingAdmin_) public {
+        require(msg.sender == referendumManager, "Timelock::executeTransaction: Call must come from referendumManager.");
+
+        setPendingAdmin(pendingAdmin_);
     }
 
 }

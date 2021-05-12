@@ -61,14 +61,27 @@ Phase 1 of governance will involve the following:
 A Gnosis multisig will be used, and will implement anything approved by snapshot.org.
 
 TODO:
-- Implement ability to change multisig admin by xDVF holders.
-- Choose initial multisig holders (inside and outside organisation). Mona, Kain, Stani, Dan, Will, Ross, + one more who doesnt mind voting regularly? Influencer?
 - Using snapshot.org if your balances are held on L2?
+- Need to create a forum, and document these processes somewhere nice / knowledge base
 
 **Phase 1B - guage adjustments on L2**
 
-- Design voting on L2 for guage parameters? Realistically centralised. We could give everyone extra vaults for xDVF? They also own those but transfer there? Conditional transaction that relies on there to be an onchain transaction?
+- Design voting on L2 for gauge parameters? Realistically centralised. We could give everyone extra vaults for xDVF? They also own those but transfer there? Conditional transaction that relies on there to be an onchain transaction?
 
+Gauge params:
+- Fee split to operator vs token holders. Split initially can be between 0 and 50%
+- Transfer fee. Can be between 1 and 5 dollars.
+- AMM base fee. Can be between 0.1 and 0.5%
+- Overall liquidity mining distribution rate
+- Weighting between each pool
+
+Will have our own dashboard. Done via DeversiFi website / app (but different section?)
+- Sign something? Trust us that we adjust based on your voting...?
+- How do you signal on L1...? What about L2...?
+- We read your balance on L1 as well as L2 at the time of weekly snaps at midnight sunday?
+- Take weighted adjustments
+
+- Overall liquidity mining distribution rate: THIS ONE NEEDS TO BE SENT FROM L1 ?
 
 We will need to publish some governance documentation!
 
