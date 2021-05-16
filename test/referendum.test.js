@@ -35,4 +35,28 @@ contract('ReferendumManager', (accounts) => {
     assert.equal(votingToken, xdvf.address, 'xdvf not set')
   })
 
+  it('initiateReplaceAdminReferendum: creates referendum and takes snapshot', async () => {
+    // Make three accounts which hold xDVF prior to proposals
+    await dvf.approve(xdvf.address, _1e18.mul(new BN(100000)))
+    await xdvf.enter(_1e18.mul(new BN(100000)))
+    await xdvf.transfer(accounts[5], _1e18.mul(new BN(1000)))
+    await xdvf.transfer(accounts[6], _1e18.mul(new BN(2000)))
+    await xdvf.transfer(accounts[7], _1e18.mul(new BN(2000)))
+
+    // Then create proposal
+    await refMan.initiateReplaceAdminReferendum(accounts[8], 'Multisig has gone rogue, replace it!')
+
+    const snapId = (await refMan.referendums(1)).votesSnapId
+
+    // Then check whether snapshotted balances are correctly reflected
+    await xdvf.transfer(accounts[8], _1e18.mul(new BN(1000)), {from: accounts[7]})
+    const voteBalanceAcc6 = await refMan.getVotesForReferendum(accounts[6], snapId)
+    const voteBalanceAcc7 = await refMan.getVotesForReferendum(accounts[7], snapId)
+    const voteBalanceAcc8 = await refMan.getVotesForReferendum(accounts[8], snapId)
+    assert.equal(voteBalanceAcc6.toString(), _1e18.mul(new BN(2000)).toString(), 'votes incorrect')
+    assert.equal(voteBalanceAcc7.toString(), _1e18.mul(new BN(2000)).toString(), 'votes incorrect')
+    assert.equal(voteBalanceAcc8.toString(), (new BN(0)).toString(), 'votes incorrect')
+  })
+
+
 })
