@@ -31,9 +31,7 @@ Whilst locked they can be staked to generate xDVF and participate in governance.
 
 At any point after the initial 12 months tokens can be unstaked and then withdrawn.
 
-TODOs:
-- For simplicity we could find a way to stake all vested tokens on behalf of the user at the start.
-- We may want to have some delegation mechanism for them to choose the address that will vote on their behalf?
+Initially xDVF will be transferred into the vesting contract (rather than pure DVF), so that they start vested and ready to vote with.
 
 
 ## Treasury Vesting
@@ -96,3 +94,13 @@ After Phase 2:
 ### Future Direction
 
 Beyond this stage DVF holders will have full ability to upgrade the governance process as they see fit. We would anticipate a push to all governance functionality implemented in Cairo so that it all takes places on L2 without gas cost.
+
+
+
+### Deployed on Ropsten
+
+DVF - 0x89c3cf486dc553225f9d3566d753a48ea03edb45
+xDVF - 0x3ad9539c143b335794bac9211aa5491daeda85bf
+SupporterVester1 - 0xcb38341F084c3d0771ae3DCceA8D4670A4fE2105
+SupporterVester2 - 0xb0E5B2B68a3595959cc5C5016735a1e7644F53B1
+SupporterVester3 - 0xbCcDC6851Cfe4e965cFb5C83D5B9f509B9A409D7

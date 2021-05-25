@@ -22,6 +22,7 @@ contract SupporterVester {
 
     // beneficiary of tokens after they are released
     address private _beneficiary;
+    address public _delegateForVoting;
 
     modifier onlyBeneficiary() {
       require (msg.sender == _beneficiary);
@@ -73,6 +74,14 @@ contract SupporterVester {
      * @return the beneficiary of the tokens.
      */
     function beneficiary() public view returns (address) {
+        return _beneficiary;
+    }
+
+    /**
+     * @return the nominated delegate who can vote on behalf of beneficiary
+     */
+    function delegateForVoting() public view returns (address) {
+        if (_delegateForVoting != address(0)) return _delegateForVoting;
         return _beneficiary;
     }
 
@@ -162,5 +171,14 @@ contract SupporterVester {
         require(currentBalance > 0, "Vesting: No staked tokens");
 
         _xdvf.leave(currentBalance);
+    }
+
+    function unstakeAndRelease() onlyBeneficiary public {
+        unstake();
+        release();
+    }
+
+    function nominateDelegate(address _newDelegate) onlyBeneficiary public {
+        _delegateForVoting = _newDelegate;
     }
 }

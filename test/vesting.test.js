@@ -37,6 +37,18 @@ contract('SupporterVester', (accounts) => {
     assert.equal(vestingStartTime, startTime, 'Start time not correct')
   })
 
+  it('nominateDelegate: delegate can be set by beneficiary', async () => {
+
+    // initialDelegate is Beneficiary
+    const initialDelegate = await vester.delegateForVoting()
+    assert.equal(initialDelegate, accounts[1], 'Incorrect initial delegate')
+
+    await vester.nominateDelegate(accounts[8], { from: accounts[1] })
+
+    const updatedDelegate = await vester.delegateForVoting()
+    assert.equal(updatedDelegate, accounts[8], 'Incorrect new delegate')
+  })
+
   it('release: correct amounts can be released during vesting period', async () => {
     await dvf.transfer(vester.address, _1e18.mul(new BN(10000)))
 
@@ -66,6 +78,22 @@ contract('SupporterVester', (accounts) => {
     assert.equal(stakedBalance.toString(), _1e18.mul(new BN(10000)).toString(), 'Not staked')
 
     await vester.unstake({from: accounts[1]})
+  })
+
+  it('unstakeAndRelease: vested tokens can be unstaked and released in one call', async () => {
+    await dvf.transfer(vester.address, _1e18.mul(new BN(10000)))
+
+    await vester.stake({from: accounts[1]})
+
+    const stakedBalance = await xdvf.balanceOf(vester.address)
+    assert.equal(stakedBalance.toString(), _1e18.mul(new BN(10000)).toString(), 'Not staked')
+
+    await moveForwardTime(50 * 60)
+
+    // All vested
+    await vester.unstakeAndRelease({ from: accounts[1] })
+    const releasedAmount = await vester.released()
+    assert.equal(releasedAmount.toString(), _1e18.mul(new BN(10000)).toString(), 'All the tokens released')
   })
 
 })
