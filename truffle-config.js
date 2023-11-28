@@ -92,6 +92,18 @@ module.exports = {
       confirmations: 1, // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: false, // Skip dry run before migrations? (default: false for public nets )
+    },
+    sepolia: {
+      provider: () => new HDWalletProvider(MNEMONIC, getProvider('sepolia')),
+      network_id: 11155111 , // sepolia's id
+      gas: 7800000,
+      // gasPrice: 12800000,
+      // gasPrice: 3000000000,
+      // gasPrice: 100,  // 20 gwei (in wei) (default: 100 gwei)
+      gasPrice: 2000000000,
+      confirmations: 1, // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: false, // Skip dry run before migrations? (default: false for public nets )
     }
   },
 
